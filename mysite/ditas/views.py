@@ -8,7 +8,8 @@ from django.utils import timezone
 from ditas.models import User
 from django.db import connection
 from django.db.utils import OperationalError
-import json, datetime
+from django.conf import settings
+import json, datetime, os
 import MySQLdb
 # Create your views here.
 
@@ -22,11 +23,22 @@ def keyboard(request):
 		'buttons' : ['정보 입력','건강 관리','건강정보 제공','개발자에게 하고 싶은 이야기']
 	})
 
-def get_json(return_str):
+def get_json(return_str, bPrint):
+
+	if bPrint == True:
+		return JsonResponse({
+			'message': {
+				'text': return_str
+			},
+			'keyboard': {
+				'type': 'text'
+			},
+		})
+
 	if return_str == '정보 입력':
 		return JsonResponse({
 			'message': {
-				'text': "고객의 이름, 생년월일(ex.1993-10-04), 성(남,여), 키 입력해주세요. "
+				'text': "고객의 이름, 생년월일(ex.1993-10-04), 성(남,여), 키 입력해주세요. (ex. 입력/당순이/2018-05-21/남/180.0) "
 			},
 			'keyboard': {
 				'type': 'text'
@@ -90,7 +102,7 @@ def get_json(return_str):
 	elif return_str == '개발자에게 하고 싶은 이야기':
 		return JsonResponse({
 			'message': {
-				'text': "개발자에게 한 마디 입력해주세요."
+				'text': "개발자에게 한 마디 입력해주세요. (ex : 한 마디/정보 입력이 잘 되지 않아요)"
 			},
 			'keyboard': {
 				'type': 'text'
@@ -100,7 +112,7 @@ def get_json(return_str):
 	else: # for print
 		return JsonResponse({
 			'message': {
-				'text': return_str
+				'text': '지정된 형식을 지켜주시면 감사하겠습니다.'
 			},
 			'keyboard': {
 				'type': 'text'
@@ -134,7 +146,16 @@ def message(request):
 			u.save()
 			data_list[0] = '데이터 입력 성공'
 
-	get_json_data = get_json(data_list[0])
+	if data_list[0] == '한 마디':
+		f = open(os.path.join(os.path.dirname(__file__),'c_log.txt'),'w',encoding='utf-8')
+		text = user_name + '(' + str(datetime.datetime.now()) + ') : ' + data_list[1]
+		f.write(text)
+		f.close()
+		data_list[0] = '수고하셨습니다.'
+		get_json_data = get_json(data_list[0], True)
+		return get_json_data
+
+	get_json_data = get_json(data_list[0], False)
 	return get_json_data
 
 @csrf_exempt

@@ -26,10 +26,12 @@ class Food(models.Model):
     f_name = models.CharField(max_length=60)
     f_sz = models.FloatField()
     f_kal = models.FloatField()
-    f_bs = models.FloatField()
-    f_ntr = models.FloatField()
-    f_fat = models.FloatField()
-    f_chol = models.FloatField()
+    f_car = models.FloatField() # 탄수화물(g)
+    f_pro = models.FloatField() # 단백질(g)
+    f_fat = models.FloatField() # 지방(g)
+    f_dang = models.FloatField() # 당(g)
+    f_ntr = models.FloatField() # 나트륨(mg)
+    f_chol = models.FloatField() # 콜레스테롤(mg)
 
 class Meal(models.Model):
     u_id = models.ForeignKey(User, on_delete=models.CASCADE)

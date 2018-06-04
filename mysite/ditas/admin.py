@@ -7,6 +7,7 @@ from .models import Meal
 from .models import Medicine
 from .models import Hospital
 from .models import Weight
+from .models import News
 
 # Register your models here.
 
@@ -17,4 +18,5 @@ admin.site.register(Meal)
 admin.site.register(Medicine)
 admin.site.register(Hospital)
 admin.site.register(Weight)
+admin.site.register(News)
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import URLValidator
 from django import forms
 # Create your models here.
 
@@ -65,4 +66,11 @@ class Hospital(models.Model):
 
     class Meta:
         unique_together = (("u_id","hos_name"),)
+
+
+class News(models.Model):
+    news_id = models.AutoField(primary_key=True)
+    news_name = models.CharField(max_length=100)
+    news_url = models.TextField(validators=[URLValidator])
+    news_date = models.DateTimeField()
 

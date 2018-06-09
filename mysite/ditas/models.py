@@ -14,12 +14,12 @@ class User(models.Model):
         return self.name
 
 class Blood(models.Model):
-    u_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ForeignKey("User",on_delete=models.CASCADE)
     bld_time = models.DateTimeField()
     bld_data = models.FloatField()
 
     class Meta:
-        unique_together = (("u_id","bld_time"),)
+        unique_together = (("user","bld_time"),)
 
 class Food(models.Model):
     f_id = models.AutoField(primary_key=True)
@@ -35,37 +35,37 @@ class Food(models.Model):
     f_chol = models.FloatField() # 콜레스테롤(mg)
 
 class Meal(models.Model):
-    u_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    f_id = models.ForeignKey(Food, on_delete=models.CASCADE)
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
+    food = models.ForeignKey("Food", on_delete=models.CASCADE)
     f_time = models.DateTimeField()
 
     class Meta:
-        unique_together = (("u_id","f_id","f_time"),)
+        unique_together = (("user","food","f_time"),)
 
 
 class Weight(models.Model):
-    u_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
     kg_date = models.DateField()
     kg_value = models.FloatField()
 
     class Meta:
-        unique_together = (("u_id","kg_date"),)
+        unique_together = (("user","kg_date"),)
 
 class Medicine(models.Model):
-    u_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
     med_name = models.CharField(max_length=40)
     med_time = models.TimeField()
 
     class Meta:
-        unique_together = (("u_id","med_name"),)
+        unique_together = (("user","med_name"),)
 
 class Hospital(models.Model):
-    u_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
     hos_name = models.CharField(max_length=40)
     hos_date = models.DateField()
 
     class Meta:
-        unique_together = (("u_id","hos_name"),)
+        unique_together = (("user","hos_name"),)
 
 
 class News(models.Model):

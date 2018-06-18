@@ -36,7 +36,8 @@ class Food(models.Model):
 
 class Meal(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE)
-    food = models.ForeignKey("Food", on_delete=models.CASCADE)
+    food = models.ForeignKey("Food", on_delete=models.CASCADE, null=True)
+    food_list = models.CharField(max_length=200,default='')
     f_time = models.DateTimeField()
 
     class Meta:
@@ -73,4 +74,6 @@ class News(models.Model):
     news_name = models.CharField(max_length=100)
     news_url = models.TextField(validators=[URLValidator])
     news_date = models.DateTimeField()
+
+
 
